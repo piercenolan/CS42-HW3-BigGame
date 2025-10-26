@@ -12,6 +12,9 @@ public class Clickable : MonoBehaviour
     // See an example in `ClickTracker.cs`, which is on a UI
     // object titled `Tracker Text (TMP)`.
     public static int Clicks = 0;
+    public static int Range = 1000;
+    public static int Level = 1;
+    public static int ChipsNeeded = 100 * Level;
 
     /// <summary>
     /// This function is called when the mouse button clicks
@@ -19,7 +22,24 @@ public class Clickable : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
-        Clicks += 1;  // add one point
+        if (Random.Range(0, Range) == 0)
+        {
+            Clicks += (int)(Clicks * 0.15);
+        }
+        else
+        {
+            Clicks += 1;  // add one point
+        }
+        checkLevel();
     }
 
+    private void checkLevel()
+    {
+        int NewLevel = (Clicks / ChipsNeeded) + 1;
+        if (NewLevel > Level)
+        {
+            Level = NewLevel;
+            Range = Mathf.Max(1, 1000 - ((Level - 1) * 50));
+        }
+    }
 }
