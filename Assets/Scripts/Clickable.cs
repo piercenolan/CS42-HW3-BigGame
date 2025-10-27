@@ -46,9 +46,10 @@ public class Clickable : MonoBehaviour
         {
             Chips += 1;  // add one point
         }
-        checkLevel();
+        //checkLevel();
     }
 
+    /*
     private void checkLevel()
     {
         int NewLevel = (Clicks / ChipsNeeded) + 1;
@@ -56,6 +57,19 @@ public class Clickable : MonoBehaviour
         {
             Level = NewLevel;
             Range = Mathf.Max(1, 1000 - ((Level - 1) * 50));
+        }
+    }
+    */
+    public void IncreaseJackpotChance()
+    {
+        int upgradeCost = 100;
+
+        if (Clickable.Chips >= upgradeCost)
+        {
+            Clickable.Chips -= upgradeCost;
+            // Decrease range by 2
+            Range = Mathf.Max(Range - 2, 1);
+            Debug.Log("Jackpot chance increased! Range: 0 - " + Range);
         }
     }
 }
