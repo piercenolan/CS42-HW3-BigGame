@@ -12,23 +12,39 @@ public class Clickable : MonoBehaviour
     // See an example in `ClickTracker.cs`, which is on a UI
     // object titled `Tracker Text (TMP)`.
     public static int Clicks = 0;
-    public static int Range = 1000;
+    public static int Chips = 0;
+    public static int Range = 10;
     public static int Level = 1;
-    public static int ChipsNeeded = 100 * Level;
+    public static int ChipsNeeded = 1000 * Level;
+    public static float JackpotRatio = 0.5f;
+
+    public ParticleSystem chipBurst;  // assign in Inspector
+    public AudioClip jackpotSound;
+    private AudioSource audioSource;
 
     /// <summary>
     /// This function is called when the mouse button clicks
     /// on this object.
     /// </summary>
+    /// 
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnMouseDown()
     {
+        Clicks += 1;
         if (Random.Range(0, Range) == 0)
         {
-            Clicks += (int)(Clicks * 0.15);
+            Chips += (int)((Chips * JackpotRatio) + 1);
+            chipBurst.Play();
+            audioSource.PlayOneShot(jackpotSound);
+            // Clicks += (int)(Clicks * 0.15);
         }
         else
         {
-            Clicks += 1;  // add one point
+            Chips += 1;  // add one point
         }
         checkLevel();
     }
